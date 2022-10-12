@@ -86,6 +86,29 @@ func GetEmployees() {
 	fmt.Println("Employee data: ", results)
 }
 
+func UpdateEmployee() {
+	sqlStatement :=
+		`
+	UPDATE employees
+	SET full_name = $2, email = $3, age = $4, division = $5
+	WHERE id = $1
+	`
+
+	// execute sql query without returning any rows
+	// `Exec()` is advised for `INSERT`, `UPDATE`, or `DELETE`
+	res, err := db.Exec(sqlStatement, 1, "Star Butterfly", "hello@bfly.com", 19, "HR")
+	if err != nil {
+		panic(err)
+	}
+
+	// returns the number rows affected by `INSERT`, `UPDATE`, or `DELETE`
+	count, err := res.RowsAffected()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Amount of updated data: ", count)
+}
+
 func main() {
 	// connect info from psql
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
@@ -107,6 +130,7 @@ func main() {
 
 	fmt.Println("Successfully connected to the database.")
 
-	CreateEmployee()
-	GetEmployees()
+	// CreateEmployee()
+	// GetEmployees()
+	UpdateEmployee()
 }
