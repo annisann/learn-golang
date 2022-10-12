@@ -43,9 +43,24 @@ func getUserById(id uint) {
 	fmt.Printf("User data: %+v \n", user)
 }
 
+func updateUserById(id uint, email string) {
+	db := database.GetDB()
+
+	user := models.User{}
+
+	err := db.Model(&user).Where("id = ?", id).Updates(models.User{Email: email}).Error
+	if err != nil {
+		fmt.Println("Error updating user data: ", err)
+		return
+	}
+
+	fmt.Printf("Update user's email: %+v \n", user.Email)
+}
+
 func main() {
 	database.StartDB()
 
 	// createUser("hello@doe.com")
-	getUserById(1)
+	// getUserById(1)
+	updateUserById(1, "johndoe@gmail.com")
 }
