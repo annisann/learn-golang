@@ -52,6 +52,40 @@ func CreateEmployee() {
 	fmt.Printf("New Employee Data: %+v\n", employee)
 }
 
+func GetEmployees() {
+	results := []Employee{}
+
+	// get all data from employees table
+	sqlStatement := `SELECT * from employees`
+
+	// execute sql query
+	rows, err := db.Query(sqlStatement)
+	if err != nil {
+		panic(err)
+	}
+
+	// close the rows
+	defer rows.Close()
+
+	/*
+		loops every data.
+		`Next()` returns True if data exists and
+				 returns False if doesn't & stop the loop.
+	*/
+	for rows.Next() {
+		employee := Employee{}
+
+		err = rows.Scan(&employee.ID, &employee.FullName, &employee.Email, &employee.Age, &employee.Division)
+		if err != nil {
+			panic(err)
+		}
+
+		results = append(results, employee)
+	}
+
+	fmt.Println("Employee data: ", results)
+}
+
 func main() {
 	// connect info from psql
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
@@ -74,4 +108,5 @@ func main() {
 	fmt.Println("Successfully connected to the database.")
 
 	CreateEmployee()
+	GetEmployees()
 }
