@@ -89,10 +89,10 @@ func GetEmployees() {
 func UpdateEmployee() {
 	sqlStatement :=
 		`
-	UPDATE employees
-	SET full_name = $2, email = $3, age = $4, division = $5
-	WHERE id = $1
-	`
+		UPDATE employees
+		SET full_name = $2, email = $3, age = $4, division = $5
+		WHERE id = $1
+		`
 
 	// execute sql query without returning any rows
 	// `Exec()` is advised for `INSERT`, `UPDATE`, or `DELETE`
@@ -107,6 +107,28 @@ func UpdateEmployee() {
 		panic(err)
 	}
 	fmt.Println("Amount of updated data: ", count)
+}
+
+func DeleteEmployee() {
+	sqlStatement :=
+		`
+		DELETE from employees
+		WHERE id = $1
+		`
+
+	// execute sql query without returning any rows
+	// `Exec()` is advised for `INSERT`, `UPDATE`, or `DELETE`
+	res, err := db.Exec(sqlStatement, 2)
+	if err != nil {
+		panic(err)
+	}
+
+	// returns the number rows affected by `INSERT`, `UPDATE`, or `DELETE`
+	count, err := res.RowsAffected()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Amount of deleted data: ", count)
 }
 
 func main() {
@@ -130,7 +152,8 @@ func main() {
 
 	fmt.Println("Successfully connected to the database.")
 
-	// CreateEmployee()
-	// GetEmployees()
+	CreateEmployee()
+	GetEmployees()
 	UpdateEmployee()
+	DeleteEmployee()
 }
