@@ -75,11 +75,29 @@ func createProduct(userID uint, brand string, name string) {
 	fmt.Println("New product data: ", Product)
 }
 
+/* Eager Loading: `JOIN` statement on GORM */
+func getUsersWithProducts() {
+	db := database.GetDB()
+
+	users := models.User{}
+
+	// load product with matching user records
+	err := db.Preload("Products").Find(&users).Error
+	if err != nil {
+		fmt.Println("Error getting user data with products: ", err.Error())
+		return
+	}
+
+	fmt.Println("User data with products")
+	fmt.Printf("%+v", users)
+}
+
 func main() {
 	database.StartDB()
 
-	// createUser("hello@doe.com")
-	// getUserById(1)
-	// updateUserById(1, "johndoe@gmail.com")
-	createProduct(1, "YLO", "ABC")
+	createUser("hello@doe.com")
+	getUserById(1)
+	updateUserById(1, "johndoe@gmail.com")
+	createProduct(1, "YLO", "ABCs")
+	getUsersWithProducts()
 }
