@@ -24,7 +24,7 @@ func StartDB() {
 	config := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 		host, user, password, dbname, dbport)
 
-	db, err := gorm.Open(postgres.Open(config), &gorm.Config{})
+	db, err = gorm.Open(postgres.Open(config), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Error connecting to database: ", err)
 	}
