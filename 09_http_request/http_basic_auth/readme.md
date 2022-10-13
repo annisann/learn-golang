@@ -1,8 +1,7 @@
 ## HTTP Basic Auth
 A http request authentication technique, encoded username & password pasted on request header.
 <br>
-e.g. Request Header with `key`:`value` as 
-<br>`Authorization: Basic [encryption of username and password data]`,
+e.g. Request Header with `key`:`value` as `Authorization: Basic [encryption of username and password data]`,
 <br> Where:
 ```
 // Username and password encryption
