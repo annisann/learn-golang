@@ -1,6 +1,6 @@
 package controllers
 
-import "github.com/jinzhu/gorm"
+import "gorm.io/gorm"
 
 type InDB struct {
 	DB *gorm.DB
