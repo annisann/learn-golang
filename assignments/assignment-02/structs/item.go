@@ -1,7 +1,7 @@
 package structs
 
 import (
-	"time"
+	"errors"
 
 	"gorm.io/gorm"
 )
@@ -15,10 +15,9 @@ type Item struct {
 	OrderID     uint32 `json:"order_id" gorm:"not null"`
 }
 
-type Order struct {
-	gorm.Model
-	ID           uint32    `json:"order_id" gorm:"primaryKey; autoIncrement"`
-	CustomerName string    `json:"customer_name" gorm:"not null; type:varchar(191)"`
-	OrderedAt    time.Time `json:"ordered_at"`
-	Items        []Item    `json:"items" gorm:"foreignKey:OrderID; references:ID"`
+func (item *Item) BeforeCreate(tx *gorm.DB) (err error) {
+	if len(item.Description) < 5 {
+		err = errors.New("description is too short")
+	}
+	return
 }
