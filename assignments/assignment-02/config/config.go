@@ -1,6 +1,7 @@
 package config
 
 import (
+	"assignment-02/structs"
 	"fmt"
 	"log"
 
@@ -25,5 +26,7 @@ func InitDB() *gorm.DB {
 	if err != nil {
 		log.Fatal("Error connecting to database: ", err)
 	}
+
+	db.AutoMigrate(&structs.Item{}, &structs.Order{})
 	return db
 }
